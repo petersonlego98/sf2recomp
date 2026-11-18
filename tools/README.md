@@ -119,9 +119,11 @@ outputs, never tracked source assets. The display version comes from the NACP
 field at `0x3060`; the package ordinal `v131072` is a separate value. In the validated
 bundle the base display version is **1.0.0** and the update display version is **1.1.0**.
 
-Conversion places the raw metadata, icon and a desktop launcher beside the native
-executable. Its stable application ID/desktop filename is
-`org.sf2recomp.ShadowFight2`; the menu name is `Shadow Fight 2 (sf2recomp)`.
+Conversion places the raw metadata and icon beside the native executable when the
+source game provides them, plus a desktop launcher. Without them it uses bundled
+metadata (Shadow Fight 2, v1.1.0) and the bundled SF2Recomp launcher icon. Its
+stable application ID/desktop filename is `org.sf2recomp.ShadowFight2`; the menu
+name is `Shadow Fight 2 (sf2recomp)`.
 The desktop entry's `Version=1.0` describes the desktop file format, while
 `X-AppVersion` records the official game display version.
 

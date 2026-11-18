@@ -82,7 +82,7 @@ The converter's output includes:
 Shadow Fight 2/
   sf2                               native executable, generated locally
   sf2recomp.ini                     runtime settings, controls and save path
-  control.nacp / icon.png            official metadata/icon, extracted locally
+  control.nacp / icon.png            official metadata/icon, when available
   game-info.json                    official title/version provenance
   org.sf2recomp.ShadowFight2.desktop Linux launcher
   extracted/exefs/                  matching main, SDK and NPDM

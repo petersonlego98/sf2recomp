@@ -35,6 +35,25 @@ def parse_nacp(data):
     return {**titles[0], K.S_DISPLAY_VERSION_3D6E: version, K.S_APPLICATION_ID_968E: APP_ID}
 
 
+def default_info():
+    """Bundled metadata used when the official NACP is not available."""
+    return {
+        K.S_TITLE_BED6: K.S_SHADOW_FIGHT_2_3618,
+        K.S_PUBLISHER_DF8D: K.S_NEKKI_LIMITED_06D7,
+        K.S_LANGUAGE_A56A: K.S_AMERICANENGLISH_BD2C,
+        K.S_DISPLAY_VERSION_3D6E: K.S_1_1_0_0766,
+        K.S_APPLICATION_ID_968E: APP_ID,
+    }
+
+
+def load_game_info(directory):
+    """Read official metadata when present, otherwise use the bundled defaults."""
+    control = Path(directory) / K.S_CONTROL_NACP_C2FD
+    if control.is_file():
+        return parse_nacp(control.read_bytes())
+    return default_info()
+
+
 def write_game_metadata(control, destination, source):
     """Copy raw official metadata and convert its matching icon without resizing."""
     from PIL import Image

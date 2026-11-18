@@ -130,11 +130,22 @@ class PackageTests(unittest.TestCase):
         self.assertEqual(old_executable.read_bytes(), b"existing game")
         self.assertEqual(list(self.output.iterdir()), [old_executable])
 
-    def test_missing_official_metadata_rejected_before_output_creation(self):
+    def test_missing_official_metadata_uses_fallback(self):
         (self.game / "control.nacp").unlink()
-        with self.assertRaisesRegex(ValueError, "Official control.nacp"):
-            convert.package_game(self.game, self.output, self.exe, self.base / "sdl", self.ffmpeg)
-        self.assertFalse(self.output.exists())
+        (self.game / "icon.png").unlink()
+        convert.package_game(self.game, self.output, self.exe, self.base / "sdl", self.ffmpeg)
+        info = json.loads((self.output / "game-info.json").read_text())
+        self.assertEqual(info["title"], "Shadow Fight 2")
+        self.assertEqual(info["publisher"], "Nekki Limited")
+        self.assertEqual(info["display_version"], "1.1.0")
+        self.assertEqual(info["application_id"], convert.APP_ID)
+        self.assertFalse((self.output / "control.nacp").exists())
+        self.assertFalse((self.output / "icon.png").exists())
+        desktop = (self.output / (convert.APP_ID + ".desktop")).read_text()
+        self.assertIn("X-AppVersion=1.1.0\n", desktop)
+        self.assertIn("Icon=", desktop)
+        build = json.loads((self.output / "build.json").read_text())
+        self.assertEqual(build["official_display_version"], "1.1.0")
 
     def test_missing_font_preserves_existing_output(self):
         self.output.mkdir()

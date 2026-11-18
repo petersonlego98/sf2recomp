@@ -13,10 +13,11 @@ Windows validation is still outstanding.
 
 ## Local inputs
 
-Supply either an already extracted supported update, including `exefs`, `romfs`,
-`control.nacp` and `icon.png`, or the supported combined base + update v131072 NSP
-with its tickets/XML sidecars and your local keys. Existing extracted files need
-no keys. The converter generates symbols and portable C on Windows as needed.
+Supply either an already extracted supported update (`exefs` and `romfs`, plus
+optional `control.nacp` and `icon.png`), or the supported combined base + update
+v131072 NSP with its tickets/XML sidecars and your local keys. Existing extracted
+files need no keys. The converter generates symbols and portable C on Windows as
+needed.
 
 Windows game objects live in `build/windows`, native extraction tools in
 `tools/bin/windows`, and their objects in `build/tools/extraction/windows`.

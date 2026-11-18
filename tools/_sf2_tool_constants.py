@@ -591,6 +591,9 @@ class EXTRACT_TITLEKEYS:
 
 
 class GAME_METADATA:
+    S_SHADOW_FIGHT_2_3618 = 'Shadow Fight 2'  # tools/game_metadata.py
+    S_NEKKI_LIMITED_06D7 = 'Nekki Limited'  # tools/game_metadata.py
+    S_1_1_0_0766 = '1.1.0'  # tools/game_metadata.py
     N_2_D473 = 2  # tools/game_metadata.py:57
     APP_ID = 'org.sf2recomp.ShadowFight2'  # tools/game_metadata.py
     S_MAIN_ACB5 = '__main__'  # tools/game_metadata.py:73
@@ -2349,7 +2352,6 @@ class CONVERT:
     S_SHARE_FFMPEG_BUILD_TXT_C10B = 'share/ffmpeg/BUILD.txt'  # tools/convert.py:106
     S_BIN_0955 = 'bin'  # tools/convert.py:105
     S_CHECK_GAME_D4C1 = '--check-game'  # tools/convert.py:104
-    S_OFFICIAL_CONTROL_NACP_ICON_P_F9D1 = 'Official control.nacp/icon.png are missing; rerun tools/extract.sh with your NSP and keys.'  # tools/convert.py:99
     S_CONTROL_NACP_C2FD = 'control.nacp'  # tools/convert.py:98
     S_OUTPUT_MUST_NOT_OVERLAP_THE__352D = 'Output must not overlap the source repository or extracted game directory.'  # tools/convert.py:97
     S_FFMPEG_5ADA = 'ffmpeg'  # tools/convert.py:93

@@ -199,12 +199,15 @@ update already applied. The converter expects this layout:
     Data/
       Managed/Metadata/global-metadata.dat
       ...                               remaining updated game assets
-  control.nacp                          official game metadata
-  icon.png                              matching official icon
+  control.nacp                          optional official game metadata
+  icon.png                              optional matching official icon
 ```
 
-Supply the complete updated RomFS. The metadata and icon are required for
-packaging; `exefs` and `romfs` alone are insufficient. The converter checks the
+Supply the complete updated RomFS. The official metadata and icon are optional:
+`exefs` and `romfs` alone are sufficient. When they are present, their title and
+display version are copied into the package and the icon is used by the desktop
+launcher. When they are absent, the converter uses bundled metadata (Shadow Fight
+2, v1.1.0) and the bundled SF2Recomp launcher icon. The converter checks the
 supported main build ID, and the executable checks matching main/SDK identities
 before boot.
 

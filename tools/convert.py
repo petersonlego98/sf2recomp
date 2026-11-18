@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT / K.S_TOOLS_F83E))
 from conversion_log import LOG_ACTIVE, run_logged_cli
 from conversion_progress import ConversionProgress
 from desktop_integration import desktop_exec, linux_desktop, register_linux_desktop, write_macos_app
-from game_metadata import APP_ID, parse_nacp
+from game_metadata import APP_ID, load_game_info
 from setup_ffmpeg import ARCHIVE_NAME as FFMPEG_ARCHIVE_NAME, VERSION as FFMPEG_VERSION
 from setup_fonts import FONT_DIRECTORY, prepare as prepare_fonts
 from windows_dlls import dependency_closure
@@ -47,8 +47,11 @@ def source_ids(game):
 
 
 def write_desktop(output, info):
+    icon = output / K.S_ICON_PNG_9A4E
+    if not icon.is_file():
+        icon = ROOT / K.S_ASSETS_SF2RECOMP_PNG_B232
     desktop = output / (APP_ID + K.S_DESKTOP_5B29)
-    desktop.write_text(linux_desktop(output / K.S_SF2_4CDA, output / K.S_ICON_PNG_9A4E,
+    desktop.write_text(linux_desktop(output / K.S_SF2_4CDA, icon,
                                     title=K.S_SHADOW_FIGHT_2_SF2RECOMP_891C, identifier=APP_ID,
                                     version=info[K.S_DISPLAY_VERSION_3D6E], category=K.S_GAME_3173), encoding=K.S_UTF_8_D983)
     desktop.chmod(K.N_493_560A)
@@ -73,9 +76,9 @@ def package_game(game, output, executable, sdl_dir, ffmpeg_dir, target=K.S_LINUX
     output = output.resolve()
     if output == ROOT or ROOT.is_relative_to(output) or game.is_relative_to(output) or output.is_relative_to(game):
         raise ValueError(K.S_OUTPUT_MUST_NOT_OVERLAP_THE__352D)
-    if not (game / K.S_CONTROL_NACP_C2FD).is_file() or not (game / K.S_ICON_PNG_9A4E).is_file():
-        raise ValueError(K.S_OFFICIAL_CONTROL_NACP_ICON_P_F9D1)
-    info = parse_nacp((game / K.S_CONTROL_NACP_C2FD).read_bytes())
+    # Official metadata and icon are optional; the runtime and desktop launcher
+    # fall back to bundled defaults when they are absent.
+    info = load_game_info(game)
     if target == K.S_LINUX_09D1:
         desktop_exec(output / K.S_SF2_4CDA)  # Validate launcher compatibility before copying files.
     # This checks the actual linked build IDs without opening a graphical window.
@@ -119,7 +122,9 @@ def package_game(game, output, executable, sdl_dir, ffmpeg_dir, target=K.S_LINUX
     if legacy.is_file() and not legacy.is_symlink():
         legacy.unlink()
     for name in (K.S_CONTROL_NACP_C2FD, K.S_ICON_PNG_9A4E):
-        shutil.copy2(game / name, output / name)
+        source = game / name
+        if source.is_file():
+            shutil.copy2(source, output / name)
     (output / K.S_GAME_INFO_JSON_44B1).write_text(json.dumps(info, ensure_ascii=False, indent=K.N_2_D473) + K.S_N_AD65, encoding=K.S_UTF_8_5383)
     if target == K.S_LINUX_09D1:
         write_desktop(output, info)
